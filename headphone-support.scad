@@ -1,6 +1,6 @@
 th = 4;
 wd = 20;
-rad = 92;
+rad = 93;
 $fn=90;
 
 module outline() {
@@ -16,7 +16,7 @@ intersection() {
 
 //rotate_extrude(angle=90) translate([5,0,0]) circle(5);
 //outline();
-ex_ang = 86;
+ex_ang = 75;
 module hunit() {
     union () {
     rotate([0,0,ex_ang-90]) translate([0,rad,0]) 
@@ -33,16 +33,20 @@ module note(st, flip, rot) {
 color("red")
 rotate([0,0,rot])
     translate([0,-(rad+th-0.75),0])
-    rotate([90,ang,0])
+    rotate([90, ang, 0])
     linear_extrude(1)
     text(st,halign="center",font=fontname);
 }
 
-difference() {
-    hunit();
-    note("\u266c",1,170);
-}
-difference() {
-    mirror([0,1,0]) hunit();
-    note("\u266a",0,10);
+offset_deg = (90-ex_ang) + 5;
+
+union () {
+    difference() {
+        hunit();
+        note("\u266c", 1, 180 - offset_deg);
+    }
+    difference() {
+        mirror([0,1,0]) hunit();
+        note("\u266a", 0, offset_deg);
+    }
 }
